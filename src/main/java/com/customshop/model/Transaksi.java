@@ -17,7 +17,15 @@ public abstract class Transaksi {
 
     public abstract double hitungTotalBiaya();
 
+    // Method Overriding target: diimplementasikan secara dinamis oleh subclass
     public abstract void cetakNota();
+
+    // Method Overloading: Mencetak nota dengan pesan / catatan khusus kasir
+    public void cetakNota(String catatanTambahan) {
+        cetakNota();
+        System.out.printf(" Catatan Kasir    : %s%n", catatanTambahan);
+        System.out.println("=================================================================");
+    }
 
     public String getKodeTransaksi() { return kodeTransaksi; }
     public String getNamaPelanggan() { return namaPelanggan; }

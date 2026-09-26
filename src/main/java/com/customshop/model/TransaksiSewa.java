@@ -6,21 +6,33 @@ public class TransaksiSewa extends Transaksi {
     private int hariTerlambat;
     private double dendaPerHari;
     private boolean isSelesai;
+    private double diskonPromoPersen;
 
+    // Overloading Constructor 1: Tanpa diskon promosi sewa
     public TransaksiSewa(String kodeTransaksi, String namaPelanggan, Gitar gitar, String tanggalTransaksi, 
                          int durasiHari, double uangDeposit) {
+        this(kodeTransaksi, namaPelanggan, gitar, tanggalTransaksi, durasiHari, uangDeposit, 0.0);
+    }
+
+    // Overloading Constructor 2: Dengan diskon promosi sewa (%)
+    public TransaksiSewa(String kodeTransaksi, String namaPelanggan, Gitar gitar, String tanggalTransaksi, 
+                         int durasiHari, double uangDeposit, double diskonPromoPersen) {
         super(kodeTransaksi, namaPelanggan, gitar, tanggalTransaksi);
         this.durasiHari = durasiHari;
         this.uangDeposit = uangDeposit;
         this.hariTerlambat = 0;
         this.dendaPerHari = gitar.getTarifSewaPerHari() * 1.5; 
         this.isSelesai = false;
+        this.diskonPromoPersen = diskonPromoPersen;
         this.totalBiaya = hitungTotalBiaya();
     }
 
     @Override
     public double hitungTotalBiaya() {
-        double biayaSewa = gitar.hitungBiayaSewa(durasiHari);
+        // Memanfaatkan Method Overloading hitungBiayaSewa milik class Gitar
+        double biayaSewa = (diskonPromoPersen > 0)
+                ? gitar.hitungBiayaSewa(durasiHari, diskonPromoPersen)
+                : gitar.hitungBiayaSewa(durasiHari);
         double totalDenda = hariTerlambat * dendaPerHari;
         return biayaSewa + uangDeposit + totalDenda;
     }
@@ -34,7 +46,9 @@ public class TransaksiSewa extends Transaksi {
 
     @Override
     public void cetakNota() {
-        double biayaSewa = gitar.hitungBiayaSewa(durasiHari);
+        double biayaSewa = (diskonPromoPersen > 0)
+                ? gitar.hitungBiayaSewa(durasiHari, diskonPromoPersen)
+                : gitar.hitungBiayaSewa(durasiHari);
         double totalDenda = hariTerlambat * dendaPerHari;
         double sisaDepositDikembalikan = Math.max(0, uangDeposit - totalDenda);
 
@@ -48,6 +62,9 @@ public class TransaksiSewa extends Transaksi {
         System.out.printf(" Unit Gitar       : [%s] %s %s%n", gitar.getIdGitar(), gitar.getMerk(), gitar.getModel());
         System.out.printf(" Tarif Sewa       : Rp %,14.0f / hari%n", gitar.getTarifSewaPerHari());
         System.out.printf(" Durasi Sewa      : %d Hari%n", durasiHari);
+        if (diskonPromoPersen > 0) {
+            System.out.printf(" Diskon Sewa (%.0f%%): -Rp %,13.0f%n", diskonPromoPersen, (gitar.hitungBiayaSewa(durasiHari) * (diskonPromoPersen / 100.0)));
+        }
         System.out.printf(" Subtotal Sewa    : Rp %,14.0f%n", biayaSewa);
         System.out.printf(" Deposit Jaminan  : Rp %,14.0f (Refundable)%n", uangDeposit);
         if (hariTerlambat > 0) {
@@ -65,4 +82,5 @@ public class TransaksiSewa extends Transaksi {
     public double getUangDeposit() { return uangDeposit; }
     public int getHariTerlambat() { return hariTerlambat; }
     public boolean isSelesai() { return isSelesai; }
+    public double getDiskonPromoPersen() { return diskonPromoPersen; }
 }

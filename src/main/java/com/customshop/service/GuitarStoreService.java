@@ -4,6 +4,7 @@ import com.customshop.model.Gitar;
 import com.customshop.model.GitarAkustik;
 import com.customshop.model.GitarBass;
 import com.customshop.model.GitarElektrik;
+import com.customshop.model.GitarVintageRelic;
 import com.customshop.model.Transaksi;
 import com.customshop.model.TransaksiBeli;
 import com.customshop.model.TransaksiSewa;
@@ -35,6 +36,13 @@ public class GuitarStoreService {
                 "EL-02", "Gibson", "Les Paul Custom 1957 Black Beauty", 
                 "One-Piece Solid Mahogany", 54000000, 320000, 
                 "Custom Bucker Alnico III HH", "Tune-O-Matic with Stopbar", true));
+
+        // Gitar Vintage Relic (Multilevel Inheritance: Gitar -> GitarElektrik -> GitarVintageRelic)
+        daftarGitar.add(new GitarVintageRelic(
+                "VR-01", "Fender", "1960 Stratocaster Heavy Relic MB", 
+                "Selected 2-Piece Alder (Aged)", 68000000, 450000, 
+                "Custom Shop Hand-Wound Texas Special", "Vintage Tremolo (Relic Nickel)", false, 
+                "Heavy Relic (Aged Nitrocellulose)", "Dale Wilson (Principal Master Builder)", 1960));
 
         daftarGitar.add(new GitarAkustik(
                 "AK-01", "Taylor", "814ce Grand Auditorium Custom", 
@@ -70,21 +78,45 @@ public class GuitarStoreService {
         return null;
     }
 
+    // Method Overloading 1: Menampilkan seluruh katalog instrumen
     public void tampilkanKatalog() {
+        tampilkanKatalog("SEMUA");
+    }
+
+    // Method Overloading 2: Menampilkan katalog berdasarkan filter kategori instrumen
+    public void tampilkanKatalog(String filterKategori) {
         System.out.println("\n=========================================================================================");
         System.out.println("                     KATALOG KOLEKSI GITAR CUSTOM SHOP PREMIER                           ");
+        if (!filterKategori.equalsIgnoreCase("SEMUA")) {
+            System.out.printf("                              FILTER KATEGORI: %s%n", filterKategori.toUpperCase());
+        }
         System.out.println("=========================================================================================");
         System.out.printf("%-7s | %-12s | %-32s | %-16s | %-14s | %-10s%n", 
                 "ID", "MERK", "SERI / MODEL", "HARGA BELI", "SEWA/HARI", "STATUS");
         System.out.println("-----------------------------------------------------------------------------------------");
         for (Gitar g : daftarGitar) {
-            System.out.printf("%-7s | %-12s | %-32s | Rp %,13.0f | Rp %,10.0f | %-10s%n",
-                    g.getIdGitar(),
-                    g.getMerk(),
-                    (g.getModel().length() > 32 ? g.getModel().substring(0, 29) + "..." : g.getModel()),
-                    g.getHargaBeli(),
-                    g.getTarifSewaPerHari(),
-                    (g.isTersedia() ? "[TERSEDIA]" : "[DISEWA]"));
+            boolean tampil = false;
+            if (filterKategori.equalsIgnoreCase("SEMUA")) {
+                tampil = true;
+            } else if (filterKategori.equalsIgnoreCase("ELEKTRIK") && (g instanceof GitarElektrik) && !(g instanceof GitarVintageRelic)) {
+                tampil = true;
+            } else if (filterKategori.equalsIgnoreCase("AKUSTIK") && (g instanceof GitarAkustik)) {
+                tampil = true;
+            } else if (filterKategori.equalsIgnoreCase("BASS") && (g instanceof GitarBass)) {
+                tampil = true;
+            } else if (filterKategori.equalsIgnoreCase("RELIC") && (g instanceof GitarVintageRelic)) {
+                tampil = true;
+            }
+
+            if (tampil) {
+                System.out.printf("%-7s | %-12s | %-32s | Rp %,13.0f | Rp %,10.0f | %-10s%n",
+                        g.getIdGitar(),
+                        g.getMerk(),
+                        (g.getModel().length() > 32 ? g.getModel().substring(0, 29) + "..." : g.getModel()),
+                        g.getHargaBeli(),
+                        g.getTarifSewaPerHari(),
+                        (g.isTersedia() ? "[TERSEDIA]" : "[DISEWA]"));
+            }
         }
         System.out.println("=========================================================================================");
     }
@@ -109,7 +141,13 @@ public class GuitarStoreService {
         return trx;
     }
 
+    // Method Overloading 1: Transaksi sewa standar
     public TransaksiSewa sewaGitar(String namaCustomer, String idGitar, int durasiHari) {
+        return sewaGitar(namaCustomer, idGitar, durasiHari, 0.0);
+    }
+
+    // Method Overloading 2: Transaksi sewa dengan promo potongan sewa
+    public TransaksiSewa sewaGitar(String namaCustomer, String idGitar, int durasiHari, double diskonPromoPersen) {
         Gitar gitar = cariGitarById(idGitar);
         if (gitar == null) {
             System.out.println(" >> Error: ID Gitar tidak ditemukan!");
@@ -124,7 +162,7 @@ public class GuitarStoreService {
         String tanggal = getTanggalHariIni();
         double deposit = gitar.getTarifSewaPerHari() * 2; // Uang jaminan = 2x tarif harian
 
-        TransaksiSewa trx = new TransaksiSewa(kodeTrx, namaCustomer, gitar, tanggal, durasiHari, deposit);
+        TransaksiSewa trx = new TransaksiSewa(kodeTrx, namaCustomer, gitar, tanggal, durasiHari, deposit, diskonPromoPersen);
         gitar.setTersedia(false); // Gitar disewa
         riwayatTransaksi.add(trx);
         return trx;

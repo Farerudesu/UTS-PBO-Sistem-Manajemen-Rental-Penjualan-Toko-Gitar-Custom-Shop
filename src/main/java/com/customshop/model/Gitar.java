@@ -21,8 +21,16 @@ public abstract class Gitar {
 
     public abstract void displaySpesifikasi();
 
+    // Method Overloading 1: Perhitungan biaya sewa standar (durasi * tarif harian)
     public double hitungBiayaSewa(int durasiHari) {
         return this.tarifSewaPerHari * durasiHari;
+    }
+
+    // Method Overloading 2: Perhitungan biaya sewa dengan potongan diskon promosi (persen)
+    public double hitungBiayaSewa(int durasiHari, double diskonPromoPersen) {
+        double totalStandar = hitungBiayaSewa(durasiHari);
+        double potongan = totalStandar * (diskonPromoPersen / 100.0);
+        return totalStandar - potongan;
     }
 
     public String getInfoSingkat() {

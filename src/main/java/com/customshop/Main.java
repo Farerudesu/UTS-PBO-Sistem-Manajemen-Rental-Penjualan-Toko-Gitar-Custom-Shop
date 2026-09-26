@@ -32,7 +32,7 @@ public class Main {
 
             switch (pilihan) {
                 case "1":
-                    storeService.tampilkanKatalog();
+                    menuLihatKatalog(storeService, scanner);
                     break;
 
                 case "2":
@@ -68,9 +68,32 @@ public class Main {
         scanner.close();
     }
 
+    private static void menuLihatKatalog(GuitarStoreService service, Scanner scanner) {
+        System.out.println("\n [Filter Kategori: 1. Semua | 2. Elektrik | 3. Akustik | 4. Bass | 5. Vintage Relic]");
+        System.out.print(" Pilih kategori (Enter untuk Semua): ");
+        String filter = scanner.nextLine().trim();
+        switch (filter) {
+            case "2":
+                service.tampilkanKatalog("ELEKTRIK");
+                break;
+            case "3":
+                service.tampilkanKatalog("AKUSTIK");
+                break;
+            case "4":
+                service.tampilkanKatalog("BASS");
+                break;
+            case "5":
+                service.tampilkanKatalog("RELIC");
+                break;
+            default:
+                service.tampilkanKatalog(); // Memanggil overloaded method versi tanpa parameter
+                break;
+        }
+    }
+
     private static void menuCekSpesifikasi(GuitarStoreService service, Scanner scanner) {
         service.tampilkanKatalog();
-        System.out.print("\n Masukkan ID Gitar yang ingin dicek spesifikasinya (misal: EL-01): ");
+        System.out.print("\n Masukkan ID Gitar yang ingin dicek spesifikasinya (misal: EL-01 / VR-01): ");
         String id = scanner.nextLine().trim();
 
         Gitar gitar = service.cariGitarById(id);
@@ -130,7 +153,22 @@ public class Main {
             durasi = 1;
         }
 
-        TransaksiSewa trx = service.sewaGitar(nama, idGitar, durasi);
+        System.out.print(" Masukkan Diskon Promo Sewa (%) [Ketik 0 jika tidak ada]: ");
+        double diskonPromo = 0;
+        try {
+            diskonPromo = Double.parseDouble(scanner.nextLine().trim());
+            if (diskonPromo < 0) diskonPromo = 0;
+        } catch (NumberFormatException e) {
+            diskonPromo = 0;
+        }
+
+        TransaksiSewa trx;
+        if (diskonPromo > 0) {
+            trx = service.sewaGitar(nama, idGitar, durasi, diskonPromo); // Overloading versi promo
+        } else {
+            trx = service.sewaGitar(nama, idGitar, durasi); // Overloading versi standar
+        }
+
         if (trx != null) {
             System.out.println("\n >> Transaksi sewa BERHASIL diproses!");
             trx.cetakNota();
