@@ -1,4 +1,4 @@
-# 🎸 Pemrograman Berorientasi Objek (Java)
+#  Pemrograman Berorientasi Objek (Java)
 ## Sistem Manajemen Rental & Penjualan Toko Gitar Custom Shop (CLI)
 
 Program aplikasi berbasis konsol (*Command Line Interface* / CLI) menggunakan bahasa pemrograman **Java** yang dirancang untuk mengelola inventaris, penyewaan, penjualan, serta pengembalian instrumen gitar edisi kolektor (*Custom Shop*). Aplikasi ini mengimplementasikan konsep fundamental **Pemrograman Berorientasi Objek (PBO)** secara komprehensif, khususnya **Inheritance (2 tipe: Hierarchical & Multilevel)**, **Polymorphism (Method Overriding & Method Overloading)**, **Encapsulation**, **Abstraction**, **Condition (If-Else & Switch-Case)**, dan **Looping**.
@@ -7,7 +7,7 @@ Aplikasi dibangun menggunakan arsitektur modular dengan struktur standar **Maven
 
 ---
 
-## 👤 Identitas Mahasiswa
+##  Identitas Mahasiswa
 * **Nama** : Muhammad Fahriel
 * **NIM** : 2509116050
 * **Kelas / Program Studi** : B'2025 Sistem Informasi
@@ -16,7 +16,7 @@ Aplikasi dibangun menggunakan arsitektur modular dengan struktur standar **Maven
 
 ---
 
-## 📖 Deskripsi Proyek & Penjelasan Studi Kasus
+##  Deskripsi Proyek & Penjelasan Studi Kasus
 
 ### 1. Ringkasan Fungsi & Kegunaan
 Sistem ini menangani tata kelola operasional pada toko musik eksklusif berkonsep *Vintage & Custom Shop*. Bisnis ini berfokus pada instrumen *high-end* bernilai tinggi yang melayani musisi profesional, studio rekaman, dan kolektor melalui dua pilar layanan utama:
@@ -46,7 +46,7 @@ Sistem ini menangani tata kelola operasional pada toko musik eksklusif berkonsep
 
 ---
 
-## 🏗️ Diagram Kelas & Hierarki Class
+##  Diagram Kelas & Hierarki Class
 
 ### 1. Class Diagram (Mermaid)
 ```mermaid
@@ -143,7 +143,7 @@ classDiagram
 
 ---
 
-## 🧩 Implementasi Elemen Wajib PBO
+##  Implementasi Elemen Wajib PBO
 
 ### 1. Inheritance (Pewarisan) - Minimal 2 Tipe
 Program ini mengimplementasikan **dua tipe pewarisan (*Inheritance*)** yang berbeda sesuai standar konsep OOP:
@@ -274,7 +274,7 @@ Penerapan struktur kontrol kondisi digunakan secara menyeluruh untuk menjamin va
 
 ---
 
-## 🔄 Alur Program & Petunjuk Eksekusi
+##  Alur Program & Petunjuk Eksekusi
 
 ### 1. Cara Membuka & Menjalankan di Apache NetBeans
 1. Buka aplikasi **Apache NetBeans**.
@@ -303,7 +303,7 @@ Penerapan struktur kontrol kondisi digunakan secara menyeluruh untuk menjamin va
 
 ---
 
-## 🖥️ Tangkapan Layar (Screenshot Running Program)
+##  Tangkapan Layar (Screenshot Running Program)
 
 Berikut adalah dokumentasi hasil eksekusi program pada antarmuka konsol Apache NetBeans:
 
@@ -367,7 +367,7 @@ Berikut adalah dokumentasi hasil eksekusi program pada antarmuka konsol Apache N
 
 ---
 
-## 📁 Struktur Direktori Proyek
+##  Struktur Direktori Proyek
 
 ```text
 CustomShopGuitar/
@@ -396,18 +396,3 @@ CustomShopGuitar/
                         └── GuitarStoreService.java # Tata Kelola Katalog, Transaksi & Overloading
 ```
 
----
-
-## 🏆 Kepatuhan terhadap Rubrik Penilaian UTS
-
-| Elemen Rubrik | Status | Penjelasan Implementasi pada Kode |
-| :--- | :---: | :--- |
-| **Inheritance (minimal 2 tipe)** | ✅ Terpenuhi | **Tipe 1: Hierarchical** (`Gitar` -> `GitarElektrik`, `GitarAkustik`, `GitarBass`).<br>**Tipe 2: Multilevel** (`Gitar` -> `GitarElektrik` -> `GitarVintageRelic`). |
-| **Polymorphism (Overriding & Overloading)** | ✅ Terpenuhi | **Overriding**: `@Override` pada `displaySpesifikasi()`, `hitungTotalBiaya()`, `cetakNota()`.<br>**Overloading**: Method `hitungBiayaSewa()`, `cetakNota()`, `tampilkanKatalog()`, dan Constructor overloading pada `TransaksiSewa`. |
-| **Condition (If-Else & Switch-Case)** | ✅ Terpenuhi | `switch-case` pada navigasi menu utama;<br>`if-else` pada validasi input, status stok unit, kalkulasi denda, dan sisa deposit. |
-| **Looping** | ✅ Terpenuhi | `while (running)` pada looping antarmuka CLI interaktif;<br>`for-each` loop pada penelusuran katalog dan cetak riwayat transaksi. |
-| **Ketentuan Studi Kasus** | ✅ Terpenuhi | Sistem Manajemen Rental & Penjualan Toko Gitar Custom Shop (Sistem mandiri & orisinal). |
-| **Alur GitHub & Dokumentasi** | ✅ Terpenuhi | Kode Java terstruktur Maven, repositori publik, dan README lengkap memuat deskripsi, alur kerja, diagram class, dan penjelasan gambar output. |
-
----
-*Dikembangkan oleh **Muhammad Fahriel** (2509116050) - B'2025 Sistem Informasi, Ujian Tengah Semester Pemrograman Berorientasi Objek.*
