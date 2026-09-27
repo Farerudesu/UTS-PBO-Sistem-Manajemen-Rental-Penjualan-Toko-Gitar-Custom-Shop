@@ -143,9 +143,9 @@ classDiagram
 
 ---
 
-##  Implementasi Elemen Wajib PBO
+##  Implementasi Elemen PBO
 
-### 1. Inheritance (Pewarisan) - Minimal 2 Tipe
+### 1. Inheritance (Pewarisan) 
 Program ini mengimplementasikan **dua tipe pewarisan (*Inheritance*)** yang berbeda sesuai standar konsep OOP:
 
 #### A. Tipe 1: Hierarchical Inheritance
